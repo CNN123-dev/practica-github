@@ -1,8 +1,8 @@
 # Practica GitHub
 
-Este es un repositorio de practica para aprender el flujo de Pull Requests con Git y GitHub.
+Este es un repositorio de práctica para aprender el flujo de Pull Requests con Git y GitHub.
 
-## Que aprenderas
+## Qué aprenderás
 
 - Crear una rama
 - Hacer cambios y confirmarlos (commit)
