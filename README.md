@@ -18,3 +18,5 @@ Clona este repositorio y sigue los pasos del flujo de PR.
 - [`robot-resultados/`](robot-resultados/README.md): robot de Google Apps Script
   que une las hojas de un resultado de laboratorio en un solo PDF con el nombre
   y documento del paciente, y lo devuelve por correo.
+- [`flange-t25/`](flange-t25/README.md): plano en PDF y archivos DXF de corte
+  del flange T25 / T28 estándar de entrada de turbina.
