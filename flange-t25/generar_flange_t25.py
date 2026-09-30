@@ -3,8 +3,8 @@
 
 Cotas nominales del patrón T25 / T28 / GT25 (entrada de turbina):
   - Patrón de agujeros: 72.4 x 40.6 mm (2.85" x 1.60"), 4 agujeros M8 x 1.25
-  - Puerto: 44.45 x 38.1 mm (1.75" x 1.50") con esquinas redondeadas
-  - Exterior: 89 x 64 mm con esquinas R8
+  - Puerto: 50.8 x 38.2 mm (2.00" x 1.50") con esquinas redondeadas
+  - Exterior: 91.6 x 62.7 mm con esquinas R8 (radios estimados)
 Unidades: milímetros. Origen en el centro del flange.
 """
 import math
@@ -20,8 +20,8 @@ from matplotlib.patches import FancyBboxPatch, Circle
 OUT = Path(__file__).resolve().parent
 
 # ---- Parámetros (mm) ----
-ANCHO, ALTO, R_EXT = 89.0, 64.0, 8.0          # contorno exterior
-PUERTO_W, PUERTO_H, R_PUERTO = 44.45, 38.1, 6.0  # puerto (1.75" x 1.50")
+ANCHO, ALTO, R_EXT = 91.6, 62.7, 8.0          # contorno exterior
+PUERTO_W, PUERTO_H, R_PUERTO = 50.8, 38.2, 6.0  # puerto (2.00" x 1.50")
 AGUJ_DX, AGUJ_DY = 72.4, 40.6                 # patrón de agujeros (2.85" x 1.60")
 D_ROSCA = 6.8      # broca para rosca M8 x 1.25
 D_PASANTE = 9.0    # agujero pasante para tornillo M8
@@ -142,7 +142,7 @@ def pdf_plano(nombre):
     cota(ax, (-hw, -hh), (hw, -hh), -24, f"{ANCHO:g}")
     cota(ax, (-AGUJ_DX / 2, -AGUJ_DY / 2), (AGUJ_DX / 2, -AGUJ_DY / 2), -12 - (hh - AGUJ_DY / 2),
          f"{AGUJ_DX:g}  (2.85\")")
-    cota(ax, (-PUERTO_W / 2, hh), (PUERTO_W / 2, hh), 12, f"{PUERTO_W:g}  (1.75\")")
+    cota(ax, (-PUERTO_W / 2, hh), (PUERTO_W / 2, hh), 12, f"{PUERTO_W:g}  (2.00\")")
     cota(ax, (hw, -hh), (hw, hh), 24, f"{ALTO:g}", vertical=True)
     cota(ax, (AGUJ_DX / 2, -AGUJ_DY / 2), (AGUJ_DX / 2, AGUJ_DY / 2), 12 + (hw - AGUJ_DX / 2),
          f"{AGUJ_DY:g}  (1.60\")", vertical=True)
@@ -167,7 +167,8 @@ def pdf_plano(nombre):
         "MATERIAL: acero al carbono (A36 / SAE 1020) o inoxidable 304 / 304L.\n"
         "AGUJEROS: roscar M8x1.25 (cortar a Ø6.8 y machuelear) o Ø9 pasante si se usan tuercas.\n"
         "Si se corta por plasma, dejar los agujeros marcados o subdimensionados y terminarlos con taladro.\n"
-        "PUERTO: 44.45 x 38.1 nominal. Se recomienda verificar contra la carcasa de la turbina y ajustar si es necesario.\n"
+        "PUERTO: 50.8 x 38.2. Cotas tomadas de fichas de fabricantes (Vibrant / Ace Race Parts). Radios de esquina estimados.\n"
+        "VERIFICAR contra la carcasa de la turbina o el flange original antes de cortar.\n"
         "TOLERANCIAS: patrón de agujeros ±0.2 mm, resto ±0.5 mm. Planitud de la cara de sello 0.1 mm. Unidades: mm."
     )
     fig.text(0.05, 0.185, notas, fontsize=8.5, va="top", family="DejaVu Sans")
