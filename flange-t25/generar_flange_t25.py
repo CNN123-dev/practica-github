@@ -2,9 +2,9 @@
 """Genera el plano (PDF) y los archivos de corte (DXF) del flange T25 estándar.
 
 Cotas nominales del patrón T25 / T28 / GT25 (entrada de turbina):
-  - Patrón de agujeros: 72.4 x 40.6 mm (2.85" x 1.60"), 4 agujeros M8 x 1.25
-  - Puerto: 50.8 x 38.2 mm (2.00" x 1.50") con esquinas redondeadas
-  - Exterior: 91.6 x 62.7 mm con esquinas R8 (radios estimados)
+  - Patrón de agujeros: 72.9 x 39.9 mm (2.87" x 1.57"), 4 agujeros M8 x 1.25
+  - Puerto: 53.8 x 41.9 mm (2.12" x 1.65") con esquinas redondeadas
+  - Exterior: 93.0 x 59.9 mm (3.66" x 2.36") con esquinas R8 (radios estimados)
 Unidades: milímetros. Origen en el centro del flange.
 """
 import math
@@ -20,9 +20,9 @@ from matplotlib.patches import FancyBboxPatch, Circle
 OUT = Path(__file__).resolve().parent
 
 # ---- Parámetros (mm) ----
-ANCHO, ALTO, R_EXT = 91.6, 62.7, 8.0          # contorno exterior
-PUERTO_W, PUERTO_H, R_PUERTO = 50.8, 38.2, 6.0  # puerto (2.00" x 1.50")
-AGUJ_DX, AGUJ_DY = 72.4, 40.6                 # patrón de agujeros (2.85" x 1.60")
+ANCHO, ALTO, R_EXT = 93.0, 59.9, 8.0          # contorno exterior (3.66" x 2.36")
+PUERTO_W, PUERTO_H, R_PUERTO = 53.8, 41.9, 8.0  # puerto (2.12" x 1.65")
+AGUJ_DX, AGUJ_DY = 72.9, 39.9                 # patrón de agujeros (2.87" x 1.57")
 D_ROSCA = 6.8      # broca para rosca M8 x 1.25
 D_PASANTE = 9.0    # agujero pasante para tornillo M8
 ESPESOR = 12.0     # espesor recomendado
@@ -139,14 +139,14 @@ def pdf_plano(nombre):
     ax.plot([-hw - 4, hw + 4], [0, 0], color="gray", lw=0.4, ls="-.")
     ax.plot([0, 0], [-hh - 4, hh + 4], color="gray", lw=0.4, ls="-.")
 
-    cota(ax, (-hw, -hh), (hw, -hh), -24, f"{ANCHO:g}")
+    cota(ax, (-hw, -hh), (hw, -hh), -24, f"{ANCHO:.1f}  (3.66\")")
     cota(ax, (-AGUJ_DX / 2, -AGUJ_DY / 2), (AGUJ_DX / 2, -AGUJ_DY / 2), -12 - (hh - AGUJ_DY / 2),
-         f"{AGUJ_DX:g}  (2.85\")")
-    cota(ax, (-PUERTO_W / 2, hh), (PUERTO_W / 2, hh), 12, f"{PUERTO_W:g}  (2.00\")")
-    cota(ax, (hw, -hh), (hw, hh), 24, f"{ALTO:g}", vertical=True)
+         f"{AGUJ_DX:g}  (2.87\")")
+    cota(ax, (-PUERTO_W / 2, hh), (PUERTO_W / 2, hh), 12, f"{PUERTO_W:g}  (2.12\")")
+    cota(ax, (hw, -hh), (hw, hh), 24, f"{ALTO:.1f}  (2.36\")", vertical=True)
     cota(ax, (AGUJ_DX / 2, -AGUJ_DY / 2), (AGUJ_DX / 2, AGUJ_DY / 2), 12 + (hw - AGUJ_DX / 2),
-         f"{AGUJ_DY:g}  (1.60\")", vertical=True)
-    cota(ax, (-hw, -PUERTO_H / 2), (-hw, PUERTO_H / 2), -12, f"{PUERTO_H:g}  (1.50\")", vertical=True)
+         f"{AGUJ_DY:g}  (1.57\")", vertical=True)
+    cota(ax, (-hw, -PUERTO_H / 2), (-hw, PUERTO_H / 2), -12, f"{PUERTO_H:g}  (1.65\")", vertical=True)
 
     cx, cy = CENTROS[3]
     ax.annotate(f"4x M8x1.25\n(broca Ø{D_ROSCA} mm)\nó 4x Ø{D_PASANTE} pasante",
@@ -167,12 +167,13 @@ def pdf_plano(nombre):
         "MATERIAL: acero al carbono (A36 / SAE 1020) o inoxidable 304 / 304L.\n"
         "AGUJEROS: roscar M8x1.25 (cortar a Ø6.8 y machuelear) o Ø9 pasante si se usan tuercas.\n"
         "Si se corta por plasma, dejar los agujeros marcados o subdimensionados y terminarlos con taladro.\n"
-        "PUERTO: 50.8 x 38.2. Cotas tomadas de fichas de fabricantes (Vibrant / Ace Race Parts). Radios de esquina estimados.\n"
+        "COTAS: tomadas del plano de referencia del usuario (3.66 x 2.36 in exterior, 2.12 x 1.65 in puerto, 2.87 x 1.57 in agujeros).\n"
+        "Radios de esquina estimados a partir de la imagen de referencia.\n"
         "VERIFICAR contra la carcasa de la turbina o el flange original antes de cortar.\n"
         "TOLERANCIAS: patrón de agujeros ±0.2 mm, resto ±0.5 mm. Planitud de la cara de sello 0.1 mm. Unidades: mm."
     )
     fig.text(0.05, 0.185, notas, fontsize=8.5, va="top", family="DejaVu Sans")
-    fig.text(0.05, 0.03, "Archivos de corte: flange_t25_corte_roscado_M8.dxf (Ø6.8)  |  "
+    fig.text(0.05, 0.015, "Archivos de corte: flange_t25_corte_roscado_M8.dxf (Ø6.8)  |  "
              "flange_t25_corte_pasante_9mm.dxf (Ø9)  -  Escala: libre  -  Hoja A4",
              fontsize=8, color="gray")
     fig.savefig(OUT / nombre, format="pdf")

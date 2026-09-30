@@ -10,21 +10,19 @@ Plano y archivos de corte del flange estándar T25 de 4 agujeros.
 | `flange_t25_plano_con_cotas.dxf` | DXF con cotas, solo para consulta en CAD |
 | `generar_flange_t25.py` | Script que genera todos los archivos anteriores |
 
-## Cotas nominales (mm)
+## Cotas (mm)
 
-- Patrón de agujeros: 72.4 x 40.6 (2.85" x 1.60"), 4x M8x1.25
-- Puerto: 50.8 x 38.2 (2.00" x 1.50")
-- Exterior: 91.6 x 62.7
+Tomadas del plano de referencia indicado por el usuario (pulgadas convertidas a mm).
+
+- Exterior: 93.0 x 59.9 (3.66" x 2.36")
+- Puerto: 53.8 x 41.9 (2.12" x 1.65")
+- Patrón de agujeros: 72.9 x 39.9 (2.87" x 1.57"), 4x M8x1.25
 - Espesor recomendado: 12 mm (mínimo 10 mm)
-- Radios de esquina (R8 exterior, R6 puerto): estimados, no vienen en las fichas
-
-Fuentes: fichas de Vibrant 1430 (exterior 91.61 x 62.7, puerto 50.8 x 38.2, agujeros
-40.6 x 72.8) y Ace Race Parts (agujeros 40.6 x 72.3, puerto 50.8 de ancho). Los fabricantes
-difieren unas décimas en la separación horizontal de agujeros; se usó el nominal de 2.85".
+- Radios de esquina (R8 exterior y R8 puerto): estimados a partir de la imagen
 
 Los DXF están en milímetros, en capas `CONTORNO`, `PUERTO` y `AGUJEROS`, con el origen
-en el centro del flange. Conviene verificar las cotas contra la carcasa de la turbina o el flange
-original antes de cortar.
+en el centro del flange. Conviene verificar contra la carcasa de la turbina o el flange original
+antes de cortar.
 
 ## Regenerar
 
