@@ -181,9 +181,68 @@ def pdf_plano(nombre):
     plt.close(fig)
 
 
+def pdf_escala_real(nombre):
+    """Plantilla A4 horizontal a escala 1:1 (1 unidad de dibujo = 1 mm de papel)."""
+    W, H = 297.0, 210.0
+    fig = plt.figure(figsize=(W / 25.4, H / 25.4))
+    ax = fig.add_axes([0, 0, 1, 1])
+    ax.set_xlim(0, W)
+    ax.set_ylim(0, H)
+    ax.set_aspect("equal")
+    ax.axis("off")
+    ox, oy = W / 2, H / 2 + 8  # centro del flange en la hoja
+    hw, hh = ANCHO / 2, ALTO / 2
+    lw_pt = 0.7  # ~0.25 mm de trazo
+
+    ax.add_patch(FancyBboxPatch((ox - hw + R_EXT, oy - hh + R_EXT), ANCHO - 2 * R_EXT, ALTO - 2 * R_EXT,
+                                boxstyle=f"round,pad={R_EXT}", fc="none", ec="black", lw=lw_pt))
+    ax.add_patch(FancyBboxPatch((ox - PUERTO_W / 2 + R_PUERTO, oy - PUERTO_H / 2 + R_PUERTO),
+                                PUERTO_W - 2 * R_PUERTO, PUERTO_H - 2 * R_PUERTO,
+                                boxstyle=f"round,pad={R_PUERTO}", fc="none", ec="black", lw=lw_pt))
+    for cx, cy in CENTROS:
+        ax.add_patch(Circle((ox + cx, oy + cy), D_ROSCA / 2, fc="none", ec="black", lw=lw_pt))
+        ax.plot([ox + cx - 4, ox + cx + 4], [oy + cy, oy + cy], color="black", lw=0.3)
+        ax.plot([ox + cx, ox + cx], [oy + cy - 4, oy + cy + 4], color="black", lw=0.3)
+    ax.plot([ox - hw - 6, ox + hw + 6], [oy, oy], color="gray", lw=0.3, ls="-.")
+    ax.plot([ox, ox], [oy - hh - 6, oy + hh + 6], color="gray", lw=0.3, ls="-.")
+
+    ax.text(W / 2, H - 14, "FLANGE T25 - PLANTILLA A ESCALA REAL 1:1", ha="center", fontsize=13, weight="bold")
+    ax.text(W / 2, H - 21,
+            "IMPRIMIR AL 100 % / \"Tamaño real\". NO usar \"Ajustar a la página\" ni \"Reducir\".",
+            ha="center", fontsize=9.5, color="#b00000")
+
+    # Medidas de referencia (texto pequeño, sin flechas para no ensuciar la plantilla)
+    ax.text(ox, oy + hh + 5, f"{ANCHO:.1f} mm", ha="center", fontsize=8)
+    ax.text(ox + hw + 5, oy, f"{ALTO:.1f} mm", ha="left", va="center", fontsize=8, rotation=90)
+
+    # Regla de comprobación: 100 mm exactos
+    ry = 62
+    ax.plot([ox - 50, ox + 50], [ry, ry], color="black", lw=0.8)
+    for k in range(0, 101, 10):
+        x = ox - 50 + k
+        alto = 4 if k % 50 == 0 else 2.5
+        ax.plot([x, x], [ry, ry + alto], color="black", lw=0.6)
+        ax.text(x, ry - 4.5, f"{k}", ha="center", fontsize=7)
+    ax.text(ox, ry + 7, "REGLA DE COMPROBACIÓN: estas marcas deben medir exactamente 100 mm",
+            ha="center", fontsize=8.5)
+
+    notas = (
+        f"Contorno {ANCHO:.1f} x {ALTO:.1f} mm (R{R_EXT:g})  |  Puerto {PUERTO_W:.1f} x {PUERTO_H:.1f} mm (R{R_PUERTO:g})  |  "
+        f"4 agujeros Ø{D_ROSCA} mm en patrón {AGUJ_DX:.1f} x {AGUJ_DY:.1f} mm",
+        "Recortar por el contorno y por el puerto, y marcar los centros de los agujeros (cruces) con punzón.",
+        f"Espesor recomendado de la placa: {ESPESOR:g} mm. Radios de esquina estimados.",
+    )
+    for i, t in enumerate(notas):
+        ax.text(W / 2, 40 - i * 6, t, ha="center", fontsize=8.5)
+    fig.savefig(OUT / nombre, format="pdf")
+    fig.savefig(OUT / nombre.replace(".pdf", ".png"), dpi=100)
+    plt.close(fig)
+
+
 if __name__ == "__main__":
     dxf_corte("flange_t25_corte_roscado_M8.dxf", D_ROSCA)
     dxf_corte("flange_t25_corte_pasante_9mm.dxf", D_PASANTE)
     dxf_plano("flange_t25_plano_con_cotas.dxf")
     pdf_plano("flange_t25_plano.pdf")
+    pdf_escala_real("flange_t25_plantilla_escala_1a1.pdf")
     print("Listo:", sorted(p.name for p in OUT.iterdir()))

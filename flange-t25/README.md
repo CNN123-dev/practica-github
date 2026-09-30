@@ -4,6 +4,7 @@ Plano y archivos de corte del flange estándar T25 de 4 agujeros.
 
 | Archivo | Uso |
 |---|---|
+| `flange_t25_plantilla_escala_1a1.pdf` | Plantilla A4 a escala real 1:1 para imprimir al 100 %, con regla de 100 mm para comprobar |
 | `flange_t25_plano.pdf` | Plano acotado (A4) con notas de material, espesor y tolerancias |
 | `flange_t25_corte_roscado_M8.dxf` | Geometría de corte, agujeros Ø6.8 mm para roscar M8x1.25 |
 | `flange_t25_corte_pasante_9mm.dxf` | Geometría de corte, agujeros Ø9 mm pasantes |
